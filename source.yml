@@ -5,5 +5,3 @@ overrides:
     branch: hdpr
   - control/orogen/locomotion_control:
     branch: hdpr
-  - drivers/orogen/platform_driver:
-    branch: hdpr
