@@ -1,0 +1,38 @@
+if !has_pcan_api? # defined in init.rb
+import_package 'drivers/pcan_pcie_mini' do |pkg|
+    def pkg.prepare
+        super
+        isolate_errors do
+            build
+            progress_done
+        end
+        message "Importing MINI PCI Express package"
+    end
+
+    def pkg.build
+        in_dir (srcdir) do
+            run("build", Autobuild.tool(:make))
+        end
+        message "Built MINI PCI Express package"
+    end
+    
+    def pkg.install
+        message "Installing MINI PCI Express package..."
+
+        in_dir (srcdir) do
+            run('install', 'sudo make install ')
+
+            # cannot do modprobe in docker
+            if (not ENV.has_key?('RUNNING_IN_DOCKER')) or (ENV['RUNNING_IN_DOCKER'] == 'false')
+                run('install', 'sudo modprobe pcan')
+            end
+
+        end
+
+        message "Installed MINI PCI Express package"
+    end
+end
+end
+
+cmake_package "drivers/platform_driver_pcan"
+orogen_package "drivers/orogen/platform_driver_pcan"
