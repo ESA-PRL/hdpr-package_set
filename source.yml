@@ -1,5 +1,8 @@
 name: hdpr
 
+imports:
+  - github: esa-prl/rover-package_set
+
 version_control:
   - drivers/pcan_pcie_mini:
     type: archive
@@ -13,6 +16,7 @@ version_control:
     type: git
     url: https://github.com/esa-prl/drivers-orogen-platform_driver_pcan.git
     branch: master
+
 overrides:
   - control/locomotion_control:
     branch: hdpr
