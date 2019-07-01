@@ -1,0 +1,3 @@
+# This files contains bundles to be imported from autoproj
+import_package "bundles/hdpr"
+orogen_package "deployments/orogen/hdpr_deployments"

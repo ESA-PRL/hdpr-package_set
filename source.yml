@@ -4,6 +4,14 @@ imports:
   - github: esa-prl/rover-package_set
 
 version_control:
+  - bundles/hdpr:
+    type: git
+    url: https://github.com/esa-prl/bundles-hdpr.git
+    branch: master
+  - deployments/orogen/hdpr_deployments:
+    type: git
+    url: https://github.com/esa-prl/deployments-orogen-hdpr_deployments.git
+    branch: master
   - drivers/pcan_pcie_mini:
     type: archive
     url: http://www.peak-system.com/fileadmin/media/linux/files/peak-linux-driver-8.6.0.tar.gz

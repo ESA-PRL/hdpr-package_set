@@ -15,7 +15,7 @@ import_package 'drivers/pcan_pcie_mini' do |pkg|
         end
         message "Built MINI PCI Express package"
     end
-    
+
     def pkg.install
         message "Installing MINI PCI Express package..."
 
