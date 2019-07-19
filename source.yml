@@ -24,6 +24,11 @@ version_control:
     type: git
     url: https://github.com/esa-prl/drivers-orogen-platform_driver_pcan.git
     branch: master
+  - drivers/orogen/ptu_directedperception:
+    type: git
+    url: https://github.com/esa-prl/drivers-orogen-ptu_directedperception.git
+    push_to: https://github.com/esa-prl/drivers-orogen-ptu_directedperception.git
+    branch: master
 
 overrides:
   - control/locomotion_control:
