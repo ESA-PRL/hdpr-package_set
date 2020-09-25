@@ -1,24 +1,11 @@
-if !has_pcan_api? # defined in init.rb
 import_package 'drivers/pcan_pcie_mini' do |pkg|
-    def pkg.prepare
-        super
-        isolate_errors do
-            build
-            progress_done
-        end
-        message "Importing MINI PCI Express package"
-    end
-
-    def pkg.build
+    def pkg.do_build
         in_dir (srcdir) do
             run("build", Autobuild.tool(:make))
         end
-        message "Built MINI PCI Express package"
     end
 
-    def pkg.install
-        message "Installing MINI PCI Express package..."
-
+    def pkg.do_install
         in_dir (srcdir) do
             run('install', 'sudo make install ')
 
@@ -28,10 +15,16 @@ import_package 'drivers/pcan_pcie_mini' do |pkg|
             end
 
         end
-
-        message "Installed MINI PCI Express package"
     end
-end
+
+    pkg.post_install do
+        pkg.progress_start "building %s" do
+            pkg.do_build
+        end
+        pkg.progress_start "installing %s" do
+            pkg.do_install
+        end
+    end
 end
 
 cmake_package "drivers/platform_driver_pcan"
