@@ -18,10 +18,10 @@ import_package 'drivers/pcan_pcie_mini' do |pkg|
     end
 
     pkg.post_install do
-        pkg.progress_start "building %s" do
+        pkg.progress_start "building %s", done_message: "built %s" do
             pkg.do_build
         end
-        pkg.progress_start "installing %s" do
+        pkg.progress_start "installing %s", done_message: "installed %s" do
             pkg.do_install
         end
     end
