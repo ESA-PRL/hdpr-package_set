@@ -1,0 +1,10 @@
+<package>
+  <description brief="Peak Can Driver for PCI Express">
+  </description>
+  <author>Peak System</author>
+  <license>GPL</license>
+  <url>http://www.peak-system.com/</url>
+  <rosdep name="kmod" />
+  <rosdep name="popt" />
+  <tags>stable</tags>
+</package>
