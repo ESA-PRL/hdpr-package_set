@@ -1,7 +1,7 @@
 import_package 'drivers/pcan_pcie_mini' do |pkg|
     def pkg.prepare
         # retrigger build and install if pcan kernel module not loaded
-        if !has_pcan_api? # defined in init.rb
+        if !running_in_docker? && !has_pcan_api? # defined in init.rb
 	        prepare_for_forced_build
         end
 
@@ -19,7 +19,7 @@ import_package 'drivers/pcan_pcie_mini' do |pkg|
             run('install', 'sudo make install ')
 
             # cannot do modprobe in docker
-            if (not ENV.has_key?('RUNNING_IN_DOCKER')) or (ENV['RUNNING_IN_DOCKER'] == 'false')
+            if !running_in_docker?
                 run('install', 'sudo modprobe pcan')
             end
 
