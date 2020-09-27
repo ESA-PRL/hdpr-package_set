@@ -1,4 +1,13 @@
 import_package 'drivers/pcan_pcie_mini' do |pkg|
+    def pkg.prepare
+        # retrigger build and install if pcan kernel module not loaded
+        if !has_pcan_api? # defined in init.rb
+	        prepare_for_forced_build
+        end
+
+        super
+    end
+
     def pkg.do_build
         in_dir (srcdir) do
             run("build", Autobuild.tool(:make))
