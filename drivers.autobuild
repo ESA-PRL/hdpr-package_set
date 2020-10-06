@@ -38,5 +38,3 @@ end
 
 cmake_package "drivers/platform_driver_pcan"
 orogen_package "drivers/orogen/platform_driver_pcan"
-
-orogen_package "drivers/orogen/ptu_directedperception"
