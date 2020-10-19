@@ -10,7 +10,7 @@ import_package 'drivers/pcan_pcie_mini' do |pkg|
 
     def pkg.do_build
         in_dir (srcdir) do
-            run("build", Autobuild.tool(:make))
+            run('build', 'make clean && make')
         end
     end
 
