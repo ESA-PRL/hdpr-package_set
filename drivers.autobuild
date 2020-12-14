@@ -16,13 +16,12 @@ import_package 'drivers/pcan_pcie_mini' do |pkg|
 
     def pkg.do_install
         in_dir (srcdir) do
-            run('install', 'sudo make install ')
-
-            # cannot do modprobe in docker
-            if !running_in_docker?
-                run('install', 'sudo modprobe pcan')
+            # cannot reload udev rules or do modprobe in docker
+            if running_in_docker?
+                run('install', 'sudo make -i install')
+            else
+                run('install', 'sudo make install && sudo modprobe pcan')
             end
-
         end
     end
 
