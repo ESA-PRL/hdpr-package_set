@@ -10,7 +10,14 @@ import_package 'drivers/pcan_pcie_mini' do |pkg|
 
     def pkg.do_build
         in_dir (srcdir) do
-            run('build', 'make clean && make')
+            if running_in_docker?
+                kernel_headers=`dpkg-query -f '${Package} ${Status}\n' -W 'linux-headers-*-generic' | awk '$NF == "installed" {printf $1}'`
+                kernel_location="/usr/src/#{kernel_headers}/"
+
+                run('build', "make KERNEL_LOCATION=#{kernel_location} clean && make KERNEL_LOCATION=#{kernel_location}")
+            else
+                run('build', 'make clean && make')
+            end
         end
     end
 
