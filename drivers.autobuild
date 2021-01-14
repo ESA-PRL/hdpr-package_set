@@ -8,12 +8,10 @@ import_package 'drivers/pcan_pcie_mini' do |pkg|
         super
     end
 
-    def pkg.do_build
+    def pkg.do_build(kernel_location)
         in_dir (srcdir) do
+            # build with kernel headers of docker image
             if running_in_docker?
-                kernel_headers=`dpkg-query -f '${Package} ${Status}\n' -W 'linux-headers-*-generic' | awk '$NF == "installed" {printf $1}'`
-                kernel_location="/usr/src/#{kernel_headers}/"
-
                 run('build', "make KERNEL_LOCATION=#{kernel_location} clean && make KERNEL_LOCATION=#{kernel_location}")
             else
                 run('build', 'make clean && make')
@@ -21,11 +19,11 @@ import_package 'drivers/pcan_pcie_mini' do |pkg|
         end
     end
 
-    def pkg.do_install
+    def pkg.do_install(kernel_location)
         in_dir (srcdir) do
             # cannot reload udev rules or do modprobe in docker
             if running_in_docker?
-                run('install', 'sudo make -i install')
+                run('install', 'sudo make KERNEL_LOCATION=#{kernel_location} -i install')
             else
                 run('install', 'sudo make install && sudo modprobe pcan')
             end
@@ -33,11 +31,19 @@ import_package 'drivers/pcan_pcie_mini' do |pkg|
     end
 
     pkg.post_install do
+        kernel_location = ""
+
+        # get location of kernel headers in docker
+        if running_in_docker?
+            kernel_headers=`dpkg-query -f '${Package} ${Status}\n' -W 'linux-headers-*-generic' | awk '$NF == "installed" {printf $1}'`
+            kernel_location="/usr/src/#{kernel_headers}/"
+        end
+
         pkg.progress_start "building %s", done_message: "built %s" do
-            pkg.do_build
+            pkg.do_build(kernel_location)
         end
         pkg.progress_start "installing %s", done_message: "installed %s" do
-            pkg.do_install
+            pkg.do_install(kernel_location)
         end
     end
 end
